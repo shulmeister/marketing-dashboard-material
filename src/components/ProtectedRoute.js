@@ -4,6 +4,7 @@
 
 import { Navigate } from "react-router-dom";
 import { useAuth } from "context/AuthContext";
+import PropTypes from "prop-types";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -15,12 +16,7 @@ const ProtectedRoute = ({ children }) => {
   // Show loading spinner while checking authentication
   if (loading) {
     return (
-      <MDBox
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-      >
+      <MDBox display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
         <MDTypography variant="h6">Loading...</MDTypography>
       </MDBox>
     );
@@ -33,6 +29,10 @@ const ProtectedRoute = ({ children }) => {
 
   // Render the protected component if authenticated
   return children;
+};
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;
