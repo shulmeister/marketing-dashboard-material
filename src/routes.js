@@ -37,6 +37,9 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
+import MarketingDashboard from "layouts/marketing-dashboard";
+import SimpleMarketingDashboard from "layouts/simple-marketing";
+import MinimalDashboard from "layouts/minimal-dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
@@ -49,6 +52,14 @@ import SignUp from "layouts/authentication/sign-up";
 import Icon from "@mui/material/Icon";
 
 const routes = [
+  {
+    type: "collapse",
+    name: "Marketing Dashboard",
+    key: "marketing-dashboard",
+    icon: <Icon fontSize="small">analytics</Icon>,
+    route: "/marketing-dashboard",
+    component: <MarketingDashboard />,
+  },
   {
     type: "collapse",
     name: "Dashboard",
