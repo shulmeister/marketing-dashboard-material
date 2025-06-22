@@ -48,6 +48,9 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
+// Protected Route component
+import ProtectedRoute from "components/ProtectedRoute";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -58,7 +61,11 @@ const routes = [
     key: "marketing-dashboard",
     icon: <Icon fontSize="small">analytics</Icon>,
     route: "/marketing-dashboard",
-    component: <MarketingDashboard />,
+    component: (
+      <ProtectedRoute>
+        <MarketingDashboard />
+      </ProtectedRoute>
+    ),
   },
   {
     type: "collapse",

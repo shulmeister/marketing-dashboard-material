@@ -53,12 +53,18 @@ import {
   setOpenConfigurator,
 } from "context";
 
+// Auth context
+import { useAuth } from "context/AuthContext";
+
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+
+  const { user, logout, isAuthenticated } = useAuth();
 
   useEffect(() => {
     // Setting the navbar type
@@ -90,6 +96,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const handleOpenUserMenu = (event) => setOpenUserMenu(event.currentTarget);
+  const handleCloseUserMenu = () => setOpenUserMenu(false);
+
+  const handleLogout = () => {
+    logout();
+    handleCloseUserMenu();
+  };
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -155,6 +168,43 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
               </IconButton>
+              {isAuthenticated && user && (
+                <>
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarIconButton}
+                    onClick={handleOpenUserMenu}
+                  >
+                    <Icon sx={iconsStyle}>account_circle</Icon>
+                  </IconButton>
+                  <Menu
+                    anchorEl={openUserMenu}
+                    anchorReference={null}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                    open={Boolean(openUserMenu)}
+                    onClose={handleCloseUserMenu}
+                    sx={{ mt: 2 }}
+                  >
+                    <NotificationItem
+                      image={<Icon fontSize="small">person</Icon>}
+                      title={[user.name || user.email]}
+                      date={user.email}
+                      onClick={handleCloseUserMenu}
+                    />
+                    <NotificationItem
+                      image={<Icon fontSize="small">logout</Icon>}
+                      title={["Logout"]}
+                      date=""
+                      onClick={handleLogout}
+                    />
+                  </Menu>
+                </>
+              )}
               <IconButton
                 size="small"
                 disableRipple

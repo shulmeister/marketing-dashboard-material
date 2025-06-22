@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -38,13 +38,54 @@ import MDButton from "components/MDButton";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
+// Auth context
+import { useAuth } from "context/AuthContext";
+
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const result = await login(email, password);
+    
+    if (result.success) {
+      navigate("/marketing-dashboard");
+    } else {
+      setError(result.error || "Login failed");
+    }
+    
+    setLoading(false);
+  };
+
+  const handleGoogleLogin = () => {
+    // For demo purposes, simulate Google login
+    const demoGoogleUser = {
+      email: "demo@gmail.com",
+      name: "Demo User",
+      picture: "https://ui-avatars.com/api/?name=Demo+User&background=344767&color=fff",
+    };
+    
+    login(demoGoogleUser.email, "demo").then((result) => {
+      if (result.success) {
+        navigate("/marketing-dashboard");
+      }
+    });
+  };
 
   return (
     <BasicLayout image={bgImage}>
@@ -75,19 +116,47 @@ function Basic() {
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography 
+                component={MuiLink} 
+                href="#" 
+                variant="body1" 
+                color="white"
+                onClick={handleGoogleLogin}
+                sx={{ cursor: "pointer" }}
+              >
                 <GoogleIcon color="inherit" />
               </MDTypography>
             </Grid>
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
+          <MDBox component="form" role="form" onSubmit={handleSubmit}>
+            {error && (
+              <MDBox mb={2}>
+                <MDTypography variant="caption" color="error">
+                  {error}
+                </MDTypography>
+              </MDBox>
+            )}
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput 
+                type="email" 
+                label="Email" 
+                fullWidth 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput 
+                type="password" 
+                label="Password" 
+                fullWidth 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -102,8 +171,25 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                sign in
+              <MDButton 
+                variant="gradient" 
+                color="info" 
+                fullWidth 
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Signing in..." : "Sign in"}
+              </MDButton>
+            </MDBox>
+            <MDBox mt={2} mb={1}>
+              <MDButton 
+                variant="outlined" 
+                color="info" 
+                fullWidth 
+                onClick={handleGoogleLogin}
+                startIcon={<GoogleIcon />}
+              >
+                Sign in with Google
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
