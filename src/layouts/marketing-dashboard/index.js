@@ -42,9 +42,9 @@ function MarketingDashboard() {
       data: [
         mailchimpData?.overview?.totalSubscribers || 0,
         mailchimpData?.overview?.totalCampaigns || 0,
-        mailchimpData?.overview?.totalLists || 0
-      ]
-    }
+        mailchimpData?.overview?.totalLists || 0,
+      ],
+    },
   };
 
   // Transform Facebook data for charts
@@ -55,9 +55,9 @@ function MarketingDashboard() {
       data: [
         Math.round((facebookData?.summary?.totalImpressions || 0) / 1000), // Scale down impressions
         facebookData?.summary?.totalClicks || 0,
-        Math.round(facebookData?.summary?.totalSpend || 0)
-      ]
-    }
+        Math.round(facebookData?.summary?.totalSpend || 0),
+      ],
+    },
   };
 
   if (loading) {
@@ -91,17 +91,16 @@ function MarketingDashboard() {
               <MDTypography variant="h4" fontWeight="medium">
                 Marketing Analytics Dashboard
               </MDTypography>
-              <MDTypography variant="body2" color="text">
-                Real-time insights from Facebook Ads and Mailchimp
-              </MDTypography>
-            </Grid>
-            <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
-              <MDButton 
-                variant="gradient" 
-                color="info" 
-                onClick={refreshData}
-                startIcon={<Icon>refresh</Icon>}
-              >
+              <MDTypography variant="body2" color="text">              Real-time insights from Facebook Ads and Mailchimp
+            </MDTypography>
+          </Grid>
+          <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
+            <MDButton
+              variant="gradient"
+              color="info"
+              onClick={refreshData}
+              startIcon={<Icon>refresh</Icon>}
+            >
                 Refresh Data
               </MDButton>
             </Grid>
@@ -181,7 +180,11 @@ function MarketingDashboard() {
                   color="info"
                   title="Mailchimp Overview"
                   description="Subscribers, Campaigns & Lists"
-                  date={`Updated: ${mailchimpData?.lastUpdated ? new Date(mailchimpData.lastUpdated).toLocaleDateString() : 'N/A'}`}
+                  date={`Updated: ${
+                    mailchimpData?.lastUpdated
+                      ? new Date(mailchimpData.lastUpdated).toLocaleDateString()
+                      : "N/A"
+                  }`}
                   chart={mailchimpChartData}
                 />
               </MDBox>
@@ -208,11 +211,12 @@ function MarketingDashboard() {
                       {mailchimpData?.campaigns?.slice(0, 3).map((campaign, index) => (
                         <MDBox key={campaign.id || index} mb={2}>
                           <MDTypography variant="button" fontWeight="medium" color="text">
-                            {campaign.settings?.subject_line || 'Campaign'}
+                            {campaign.settings?.subject_line || "Campaign"}
                           </MDTypography>
                           <MDBox display="flex" justifyContent="space-between" mt={0.5}>
                             <MDTypography variant="caption" color="text">
-                              Open Rate: {((campaign.report_summary?.opens?.open_rate || 0) * 100).toFixed(1)}%
+                              Open Rate:{" "}
+                              {((campaign.report_summary?.opens?.open_rate || 0) * 100).toFixed(1)}%
                             </MDTypography>
                             <MDTypography variant="caption" color="text">
                               Clicks: {campaign.report_summary?.clicks?.unique_clicks || 0}

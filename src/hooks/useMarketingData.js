@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { mailchimpService, mockMailchimpData } from '../api/mailchimp';
-import { facebookService, mockFacebookData } from '../api/facebook';
+import { useState, useEffect } from "react";
+import { mailchimpService, mockMailchimpData } from "../api/mailchimp";
+import { facebookService, mockFacebookData } from "../api/facebook";
 
-const USE_MOCK_DATA = process.env.REACT_APP_USE_MOCK_DATA === 'true';
+const USE_MOCK_DATA = process.env.REACT_APP_USE_MOCK_DATA === "true";
 
 export const useMarketingData = () => {
   const [mailchimpData, setMailchimpData] = useState(null);
@@ -24,25 +24,25 @@ export const useMarketingData = () => {
           // Fetch real data from APIs
           const [mailchimpResult, facebookResult] = await Promise.allSettled([
             mailchimpService.getOverview(),
-            facebookService.getInsights()
+            facebookService.getInsights(),
           ]);
 
-          if (mailchimpResult.status === 'fulfilled') {
+          if (mailchimpResult.status === "fulfilled") {
             setMailchimpData(mailchimpResult.value);
           } else {
-            console.warn('Mailchimp API failed, using mock data:', mailchimpResult.reason);
+            console.warn("Mailchimp API failed, using mock data:", mailchimpResult.reason);
             setMailchimpData(mockMailchimpData);
           }
 
-          if (facebookResult.status === 'fulfilled') {
+          if (facebookResult.status === "fulfilled") {
             setFacebookData(facebookResult.value);
           } else {
-            console.warn('Facebook API failed, using mock data:', facebookResult.reason);
+            console.warn("Facebook API failed, using mock data:", facebookResult.reason);
             setFacebookData(mockFacebookData);
           }
         }
       } catch (err) {
-        console.error('Error fetching marketing data:', err);
+        console.error("Error fetching marketing data:", err);
         setError(err.message);
         // Fallback to mock data on error
         setMailchimpData(mockMailchimpData);
@@ -64,14 +64,14 @@ export const useMarketingData = () => {
         if (!USE_MOCK_DATA) {
           const [mailchimpResult, facebookResult] = await Promise.allSettled([
             mailchimpService.getOverview(),
-            facebookService.getInsights()
+            facebookService.getInsights(),
           ]);
 
-          if (mailchimpResult.status === 'fulfilled') {
+          if (mailchimpResult.status === "fulfilled") {
             setMailchimpData(mailchimpResult.value);
           }
 
-          if (facebookResult.status === 'fulfilled') {
+          if (facebookResult.status === "fulfilled") {
             setFacebookData(facebookResult.value);
           }
         }
@@ -90,6 +90,6 @@ export const useMarketingData = () => {
     facebookData,
     loading,
     error,
-    refreshData
+    refreshData,
   };
 };

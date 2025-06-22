@@ -2,7 +2,7 @@
  * Minimal Marketing Dashboard - Testing Version
  */
 
-import React from 'react';
+import React from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -32,32 +32,40 @@ function MinimalDashboard() {
                   🎉 Marketing Analytics Dashboard
                 </MDTypography>
                 <MDTypography variant="body1" color="text" mt={2}>
-                  Dashboard is working! Here's your marketing data:
+                  Dashboard is working! Here&apos;s your marketing data:
                 </MDTypography>
                 
                 <Box mt={3}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>
-                      <Card sx={{ p: 2, textAlign: 'center' }}>
-                        <Typography variant="h4" color="primary">2,450</Typography>
+                      <Card sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h4" color="primary">
+                          2,450
+                        </Typography>
                         <Typography variant="body2">Email Subscribers</Typography>
                       </Card>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
-                      <Card sx={{ p: 2, textAlign: 'center' }}>
-                        <Typography variant="h4" color="success.main">23</Typography>
+                      <Card sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h4" color="success.main">
+                          23
+                        </Typography>
                         <Typography variant="body2">Email Campaigns</Typography>
                       </Card>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
-                      <Card sx={{ p: 2, textAlign: 'center' }}>
-                        <Typography variant="h4" color="info.main">12,450</Typography>
+                      <Card sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h4" color="info.main">
+                          12,450
+                        </Typography>
                         <Typography variant="body2">FB Impressions</Typography>
                       </Card>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
-                      <Card sx={{ p: 2, textAlign: 'center' }}>
-                        <Typography variant="h4" color="warning.main">$245</Typography>
+                      <Card sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h4" color="warning.main">
+                          $245
+                        </Typography>
                         <Typography variant="body2">Ad Spend</Typography>
                       </Card>
                     </Grid>
@@ -78,9 +86,12 @@ function MinimalDashboard() {
 
                 <MDBox mt={3}>
                   <Typography variant="body2" color="text.secondary">
-                    ✅ Dashboard Status: Working<br/>
-                    ✅ Components: Loaded<br/>
-                    ✅ Data: Mock data displaying<br/>
+                    ✅ Dashboard Status: Working
+                    <br />
+                    ✅ Components: Loaded
+                    <br />
+                    ✅ Data: Mock data displaying
+                    <br />
                     🔄 Next: Add real API integration
                   </Typography>
                 </MDBox>
