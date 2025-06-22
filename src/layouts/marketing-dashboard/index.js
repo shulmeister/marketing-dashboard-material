@@ -91,16 +91,17 @@ function MarketingDashboard() {
               <MDTypography variant="h4" fontWeight="medium">
                 Marketing Analytics Dashboard
               </MDTypography>
-              <MDTypography variant="body2" color="text">              Real-time insights from Facebook Ads and Mailchimp
-            </MDTypography>
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
-            <MDButton
-              variant="gradient"
-              color="info"
-              onClick={refreshData}
-              startIcon={<Icon>refresh</Icon>}
-            >
+              <MDTypography variant="body2" color="text">
+                Real-time insights from Facebook Ads and Mailchimp
+              </MDTypography>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
+              <MDButton
+                variant="gradient"
+                color="info"
+                onClick={refreshData}
+                startIcon={<Icon>refresh</Icon>}
+              >
                 Refresh Data
               </MDButton>
             </Grid>

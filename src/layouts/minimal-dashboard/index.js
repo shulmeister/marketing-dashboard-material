@@ -34,7 +34,7 @@ function MinimalDashboard() {
                 <MDTypography variant="body1" color="text" mt={2}>
                   Dashboard is working! Here&apos;s your marketing data:
                 </MDTypography>
-                
+
                 <Box mt={3}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>

@@ -43,7 +43,7 @@ export const mailchimpService = {
       console.error("Error fetching Mailchimp lists:", error);
       throw error;
     }
-  }
+  },
 };
 
 // Mock data for development when API is not available
