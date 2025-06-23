@@ -72,8 +72,17 @@ function Basic() {
     setLoading(false);
   };
 
-  const handleGoogleLogin = () => {
-    loginWithGoogle();
+  const handleGoogleLogin = async () => {
+    console.log("Google login button clicked");
+    try {
+      const result = await loginWithGoogle();
+      if (!result.success) {
+        setError(result.error || "Google authentication failed");
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      setError("Google authentication error: " + error.message);
+    }
   };
 
   return (
