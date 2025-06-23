@@ -44,11 +44,14 @@ export const AuthProvider = ({ children }) => {
           handleGoogleTokenResponse(idToken).then(() => {
             // Clean up the URL
             window.history.replaceState({}, document.title, window.location.pathname);
-            
+
             // Redirect to dashboard or saved path
             const savedPath = localStorage.getItem("pre_auth_path");
             localStorage.removeItem("pre_auth_path");
-            window.location.href = savedPath === "/authentication/sign-in" ? "/marketing-dashboard" : (savedPath || "/marketing-dashboard");
+            window.location.href =
+              savedPath === "/authentication/sign-in"
+                ? "/marketing-dashboard"
+                : savedPath || "/marketing-dashboard";
           });
           return; // Don't continue with normal loading
         }
@@ -169,7 +172,7 @@ export const AuthProvider = ({ children }) => {
 
       // Direct redirect to Google OAuth
       window.location.href = authUrl;
-      
+
       return { success: true }; // Will redirect, so this doesn't matter
     } catch (error) {
       console.error("Google login error:", error);
@@ -217,7 +220,7 @@ export const AuthProvider = ({ children }) => {
   const handleGoogleTokenResponse = async (idToken) => {
     try {
       console.log("Processing Google ID token");
-      
+
       // Decode the JWT token
       const base64Url = idToken.split(".")[1];
       const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -244,7 +247,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("dashboard-user", JSON.stringify(userData));
       setUser(userData);
       setIsAuthenticated(true);
-      
+
       console.log("User authenticated successfully");
       return { success: true };
     } catch (error) {
