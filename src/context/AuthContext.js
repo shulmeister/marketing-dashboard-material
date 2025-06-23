@@ -39,7 +39,9 @@ export const AuthProvider = ({ children }) => {
         id: 1,
         email: email,
         name: email.split("@")[0],
-        avatar: `https://ui-avatars.com/api/?name=${email.split("@")[0]}&background=344767&color=fff`,
+        avatar: `https://ui-avatars.com/api/?name=${
+          email.split("@")[0]
+        }&background=344767&color=fff`,
       };
 
       localStorage.setItem("dashboard-user", JSON.stringify(userData));
