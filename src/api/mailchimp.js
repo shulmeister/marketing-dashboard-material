@@ -49,11 +49,11 @@ export const mailchimpService = {
 // Mock data for development when API is not available
 export const mockMailchimpData = {
   overview: {
-    totalSubscribers: 2450,
-    totalCampaigns: 23,
-    avgOpenRate: 24.5,
-    avgClickRate: 3.2,
-    totalLists: 5,
+    totalSubscribers: 534,
+    totalCampaigns: 8,
+    avgOpenRate: 28.5,
+    avgClickRate: 4.2,
+    totalLists: 3,
     lastUpdated: new Date().toISOString(),
   },
   campaigns: [

@@ -51,7 +51,7 @@ function Basic() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -80,7 +80,7 @@ function Basic() {
       picture: "https://ui-avatars.com/api/?name=Demo+User&background=344767&color=fff",
     };
 
-    login(demoGoogleUser.email, "demo").then((result) => {
+    loginWithGoogle(demoGoogleUser).then((result) => {
       if (result.success) {
         navigate("/marketing-dashboard");
       }

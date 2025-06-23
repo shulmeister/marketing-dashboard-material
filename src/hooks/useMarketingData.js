@@ -5,6 +5,11 @@ import { facebookService, mockFacebookData } from "../api/facebook";
 const USE_MOCK_DATA = process.env.REACT_APP_USE_MOCK_DATA === "true";
 
 export const useMarketingData = () => {
+  console.log("Environment variables:", {
+    USE_MOCK_DATA,
+    REACT_APP_USE_MOCK_DATA: process.env.REACT_APP_USE_MOCK_DATA,
+    API_BASE_URL: process.env.REACT_APP_API_BASE_URL
+  });
   const [mailchimpData, setMailchimpData] = useState(null);
   const [facebookData, setFacebookData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,12 +20,20 @@ export const useMarketingData = () => {
       setLoading(true);
       setError(null);
 
+      console.log("🔍 Debug info:", {
+        USE_MOCK_DATA,
+        API_BASE_URL: process.env.REACT_APP_API_BASE_URL,
+        environment: process.env.NODE_ENV
+      });
+
       try {
         if (USE_MOCK_DATA) {
+          console.log("📊 Using mock data");
           // Use mock data for development
           setMailchimpData(mockMailchimpData);
           setFacebookData(mockFacebookData);
         } else {
+          console.log("🌐 Fetching real API data...");
           // Fetch real data from APIs
           const [mailchimpResult, facebookResult] = await Promise.allSettled([
             mailchimpService.getOverview(),
@@ -28,16 +41,18 @@ export const useMarketingData = () => {
           ]);
 
           if (mailchimpResult.status === "fulfilled") {
+            console.log("✅ Mailchimp API success:", mailchimpResult.value);
             setMailchimpData(mailchimpResult.value);
           } else {
-            console.warn("Mailchimp API failed, using mock data:", mailchimpResult.reason);
+            console.warn("❌ Mailchimp API failed, using mock data:", mailchimpResult.reason);
             setMailchimpData(mockMailchimpData);
           }
 
           if (facebookResult.status === "fulfilled") {
+            console.log("✅ Facebook API success:", facebookResult.value);
             setFacebookData(facebookResult.value);
           } else {
-            console.warn("Facebook API failed, using mock data:", facebookResult.reason);
+            console.warn("❌ Facebook API failed, using mock data:", facebookResult.reason);
             setFacebookData(mockFacebookData);
           }
         }

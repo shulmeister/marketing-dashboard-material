@@ -33,6 +33,7 @@ import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
 function MarketingDashboard() {
   const { mailchimpData, facebookData, loading, error, refreshData } = useMarketingData();
+  const isUsingMockData = process.env.REACT_APP_USE_MOCK_DATA === "true";
 
   // Transform Mailchimp data for charts
   const mailchimpChartData = {
@@ -92,8 +93,15 @@ function MarketingDashboard() {
                 Marketing Analytics Dashboard
               </MDTypography>
               <MDTypography variant="body2" color="text">
-                Real-time insights from Facebook Ads and Mailchimp
+                {isUsingMockData 
+                  ? "Using mock data for demonstration" 
+                  : "Real-time insights from Facebook Ads and Mailchimp"}
               </MDTypography>
+              {isUsingMockData && (
+                <MDTypography variant="caption" color="warning" fontWeight="bold">
+                  ⚠️ DEMO MODE - Switch to real data in settings
+                </MDTypography>
+              )}
             </Grid>
             <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
               <MDButton
