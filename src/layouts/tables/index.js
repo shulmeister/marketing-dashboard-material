@@ -397,10 +397,12 @@ function Tables() {
                             </MDTypography>
                           </TableCell>
                           <TableCell align="right">
-                            ${(costPerVisit * (territory.visits / totalSalesVisits)).toFixed(2)}
+                            <MDTypography variant="body2" fontWeight="medium">
+                              ${(costPerVisit * (territory.visits / totalSalesVisits)).toFixed(2)}
+                            </MDTypography>
                           </TableCell>
                           <TableCell align="right">
-                            <MDTypography variant="body2" color="success">
+                            <MDTypography variant="body2" color="success" fontWeight="medium">
                               ${(territory.visits * costPerVisit * 1.5).toFixed(0)}
                             </MDTypography>
                           </TableCell>

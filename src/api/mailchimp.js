@@ -60,7 +60,7 @@ export const mockMailchimpData = {
     {
       id: "mc001",
       settings: { subject_line: "Summer Sale - 50% Off!" },
-      send_time: "2024-06-20T10:00:00Z",
+      send_time: "2025-06-20T10:00:00Z",
       report_summary: {
         opens: { open_rate: 0.28, unique_opens: 686 },
         clicks: { click_rate: 0.045, unique_clicks: 110 },
@@ -70,10 +70,20 @@ export const mockMailchimpData = {
     {
       id: "mc002",
       settings: { subject_line: "New Product Launch" },
-      send_time: "2024-06-18T14:30:00Z",
+      send_time: "2025-06-18T14:30:00Z",
       report_summary: {
         opens: { open_rate: 0.22, unique_opens: 539 },
         clicks: { click_rate: 0.032, unique_clicks: 78 },
+        emails_sent: 2450,
+      },
+    },
+    {
+      id: "mc003",
+      settings: { subject_line: "Holiday Marketing Push" },
+      send_time: "2025-06-15T09:00:00Z",
+      report_summary: {
+        opens: { open_rate: 0.31, unique_opens: 759 },
+        clicks: { click_rate: 0.052, unique_clicks: 127 },
         emails_sent: 2450,
       },
     },
