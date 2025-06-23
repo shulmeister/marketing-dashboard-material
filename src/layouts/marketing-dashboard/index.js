@@ -113,6 +113,7 @@ function MarketingDashboard() {
             </Grid>
           </Grid>
         </MDBox>
+        {/* Prettier touch: blank line to force update */}
 
         {/* Statistics Cards */}
         <Grid container spacing={3}>

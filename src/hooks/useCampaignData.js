@@ -66,3 +66,5 @@ export function useCampaignData() {
 
   return { salesData, analyticsData, loading, error };
 }
+
+// Prettier touch: blank line to force update
