@@ -8,7 +8,7 @@ export const useMarketingData = () => {
   console.log("Environment variables:", {
     USE_MOCK_DATA,
     REACT_APP_USE_MOCK_DATA: process.env.REACT_APP_USE_MOCK_DATA,
-    API_BASE_URL: process.env.REACT_APP_API_BASE_URL
+    API_BASE_URL: process.env.REACT_APP_API_BASE_URL,
   });
   const [mailchimpData, setMailchimpData] = useState(null);
   const [facebookData, setFacebookData] = useState(null);
@@ -23,7 +23,7 @@ export const useMarketingData = () => {
       console.log("🔍 Debug info:", {
         USE_MOCK_DATA,
         API_BASE_URL: process.env.REACT_APP_API_BASE_URL,
-        environment: process.env.NODE_ENV
+        environment: process.env.NODE_ENV,
       });
 
       try {
