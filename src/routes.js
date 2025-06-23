@@ -67,6 +67,8 @@ const routes = [
       </ProtectedRoute>
     ),
   },
+  // Generic dashboard hidden - using Marketing Dashboard instead
+  /*
   {
     type: "collapse",
     name: "Dashboard",
@@ -75,6 +77,7 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
   },
+  */
   {
     type: "collapse",
     name: "Tables",
