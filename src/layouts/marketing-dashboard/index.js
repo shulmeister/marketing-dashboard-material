@@ -93,7 +93,6 @@ function MarketingDashboard() {
               </MDTypography>
               <MDTypography variant="body2" color="text">
                 Live data from Facebook Ads, Mailchimp & Google Sheets •{" "}
-                {" "}
                 {new Date().toLocaleDateString("en-US", {
                   weekday: "long",
                   year: "numeric",

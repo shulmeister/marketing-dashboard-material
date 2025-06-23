@@ -38,14 +38,12 @@ export function useCampaignData() {
             conversionRate:
               analyticsResult.conversionRate ||
               (analyticsResult.overview?.totalConversions && analyticsResult.overview?.totalSessions
-                ?
-                  (analyticsResult.overview.totalConversions /
+                ? (analyticsResult.overview.totalConversions /
                     analyticsResult.overview.totalSessions) *
                   100
                 : 0),
             avgSessionDuration: analyticsResult.avgSessionDuration || 150,
-            pageViews:
-              analyticsResult.pageViews || analyticsResult.overview?.totalPageViews || 0,
+            pageViews: analyticsResult.pageViews || analyticsResult.overview?.totalPageViews || 0,
             bounceRate: analyticsResult.bounceRate || 35,
             lastUpdated: analyticsResult.lastUpdated || new Date().toISOString(),
             source: analyticsResult.source || "google_analytics_api",
@@ -53,9 +51,7 @@ export function useCampaignData() {
 
           setAnalyticsData(transformedData);
         } else {
-          throw new Error(
-            `Analytics API responded with status: ${analyticsResponse.status}`
-          );
+          throw new Error(`Analytics API responded with status: ${analyticsResponse.status}`);
         }
       } catch (err) {
         console.error("Error fetching campaign data:", err);
