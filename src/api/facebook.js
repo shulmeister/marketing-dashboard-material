@@ -23,8 +23,8 @@ export const facebookService = {
 export const mockFacebookData = {
   data: [
     {
-      date_start: "2024-06-20",
-      date_stop: "2024-06-20",
+      date_start: "2025-06-23",
+      date_stop: "2025-06-23",
       spend: "245.67",
       impressions: "12450",
       clicks: "245",
@@ -35,14 +35,14 @@ export const mockFacebookData = {
   campaigns: [
     {
       id: "fb001",
-      name: "Summer Campaign 2024",
+      name: "Summer Campaign 2025",
       status: "ACTIVE",
       daily_budget: "50.00",
       lifetime_budget: null,
     },
     {
       id: "fb002",
-      name: "Brand Awareness Q2",
+      name: "Brand Awareness Q2 2025",
       status: "PAUSED",
       daily_budget: "75.00",
       lifetime_budget: null,
