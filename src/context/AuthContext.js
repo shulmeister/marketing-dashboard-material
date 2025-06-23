@@ -122,7 +122,25 @@ export const AuthProvider = ({ children }) => {
 
       // Direct OAuth popup approach
       const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-      const redirectUri = `${window.location.origin}/authentication/sign-in`;
+      
+      // Use configured redirect URI or fall back to current origin
+      let redirectUri = process.env.REACT_APP_REDIRECT_URI;
+      
+      // For production/Vercel, use a more predictable URL pattern
+      if (!redirectUri || redirectUri.includes("localhost")) {
+        const origin = window.location.origin;
+        
+        // Check if we're on a Vercel deployment
+        if (origin.includes("vercel.app")) {
+          // Use the main production domain for consistency
+          redirectUri = "https://marketing-dashboard-material.vercel.app/authentication/sign-in";
+        } else {
+          // For local development or other deployments
+          redirectUri = `${origin}/authentication/sign-in`;
+        }
+      }
+      
+      console.log("Using redirect URI:", redirectUri);
 
       const params = new URLSearchParams({
         client_id: clientId,
