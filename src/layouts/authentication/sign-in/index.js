@@ -64,7 +64,7 @@ function Basic() {
       // Check if this is an OAuth redirect in a popup
       if (hash && (hash.includes("access_token") || hash.includes("id_token"))) {
         console.log("OAuth redirect detected in popup");
-        
+
         try {
           const hashParams = new URLSearchParams(hash.substring(1));
           const idToken = hashParams.get("id_token");
@@ -72,7 +72,7 @@ function Basic() {
 
           if ((state === "google_oauth_popup" || hashState === "google_oauth_popup") && idToken) {
             console.log("Valid OAuth response, processing...");
-            
+
             // Decode and process the token
             const base64Url = idToken.split(".")[1];
             const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -97,13 +97,16 @@ function Basic() {
 
             // Store user data and close popup
             localStorage.setItem("dashboard-user", JSON.stringify(userData));
-            
+
             // Signal to parent window and close popup
             if (window.opener) {
-              window.opener.postMessage({
-                type: "GOOGLE_AUTH_SUCCESS",
-                user: userData
-              }, window.location.origin);
+              window.opener.postMessage(
+                {
+                  type: "GOOGLE_AUTH_SUCCESS",
+                  user: userData,
+                },
+                window.location.origin
+              );
               window.close();
             } else {
               // Not in popup, redirect normally
@@ -113,10 +116,13 @@ function Basic() {
         } catch (error) {
           console.error("Error processing OAuth redirect:", error);
           if (window.opener) {
-            window.opener.postMessage({
-              type: "GOOGLE_AUTH_ERROR",
-              error: error.message
-            }, window.location.origin);
+            window.opener.postMessage(
+              {
+                type: "GOOGLE_AUTH_ERROR",
+                error: error.message,
+              },
+              window.location.origin
+            );
             window.close();
           }
         }
