@@ -99,28 +99,6 @@ export const AuthProvider = ({ children }) => {
     loadGoogleScript();
   }, []);
 
-  // Simple email/password login (for demo purposes)
-  const login = async (email, password) => {
-    try {
-      // For demo purposes, accept any email/password
-      const userData = {
-        id: 1,
-        email: email,
-        name: email.split("@")[0],
-        avatar: `https://ui-avatars.com/api/?name=${
-          email.split("@")[0]
-        }&background=344767&color=fff`,
-      };
-
-      localStorage.setItem("dashboard-user", JSON.stringify(userData));
-      setUser(userData);
-      setIsAuthenticated(true);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
-
   // Real Google OAuth login - Direct redirect approach
   const loginWithGoogle = async () => {
     try {
@@ -267,7 +245,6 @@ export const AuthProvider = ({ children }) => {
     user,
     isAuthenticated,
     loading,
-    login,
     loginWithGoogle,
     logout,
   };

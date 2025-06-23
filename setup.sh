@@ -1,4 +1,5 @@
 #!/bin/bash
+# Production setup script only. All mock/demo data logic removed.
 
 echo "🚀 Setting up Marketing Analytics Dashboard..."
 
@@ -18,7 +19,7 @@ fi
 if [ ! -f ".env" ]; then
     echo "⚙️ Setting up environment configuration..."
     cp .env.example .env
-    echo "✅ Created .env file with mock data enabled"
+    echo "✅ Created .env file"
 fi
 
 echo ""
@@ -26,8 +27,5 @@ echo "🎉 Setup complete! To start the dashboard:"
 echo ""
 echo "   npm start           # Start development server"
 echo "   npm run build       # Build for production"
-echo ""
-echo "📊 The dashboard will show mock data by default."
-echo "💡 Edit .env to configure real API integration."
 echo ""
 echo "🌐 Dashboard will be available at: http://localhost:3000"

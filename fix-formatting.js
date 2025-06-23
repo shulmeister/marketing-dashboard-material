@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Fix AuthContext.js
-const authContextPath = path.join(__dirname, 'src/context/AuthContext.js');
+const authContextPath = path.join(__dirname, "src/context/AuthContext.js");
 const authContextContent = `/**
  * Authentication Context for Material Dashboard
  */
@@ -36,48 +36,6 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Simple email/password login (for demo purposes)
-  const login = async (email, password) => {
-    try {
-      // For demo purposes, accept any email/password
-      const userData = {
-        id: 1,
-        email: email,
-        name: email.split("@")[0],
-        avatar: \`https://ui-avatars.com/api/?name=\${email.split("@")[0]}&background=344767&color=fff\`,
-      };
-
-      localStorage.setItem("dashboard-user", JSON.stringify(userData));
-      setUser(userData);
-      setIsAuthenticated(true);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
-
-  // Google login (placeholder for now)
-  const loginWithGoogle = async (googleUser) => {
-    try {
-      const userData = {
-        id: googleUser.sub || Date.now(),
-        email: googleUser.email,
-        name: googleUser.name,
-        avatar:
-          googleUser.picture ||
-          \`https://ui-avatars.com/api/?name=\${googleUser.name}&background=344767&color=fff\`,
-        provider: "google",
-      };
-
-      localStorage.setItem("dashboard-user", JSON.stringify(userData));
-      setUser(userData);
-      setIsAuthenticated(true);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
-
   // Logout
   const logout = () => {
     localStorage.removeItem("dashboard-user");
@@ -89,8 +47,6 @@ export const AuthProvider = ({ children }) => {
     user,
     isAuthenticated,
     loading,
-    login,
-    loginWithGoogle,
     logout,
   };
 
@@ -103,4 +59,4 @@ AuthProvider.propTypes = {
 `;
 
 fs.writeFileSync(authContextPath, authContextContent);
-console.log('Fixed AuthContext.js');
+console.log("Fixed AuthContext.js");

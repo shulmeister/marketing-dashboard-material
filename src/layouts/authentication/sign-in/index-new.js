@@ -76,15 +76,7 @@ function Basic() {
     setLoading(true);
     setError("");
 
-    // Simulate Google login with mock data
-    const mockGoogleUser = {
-      sub: "123456789",
-      email: "demo@google.com",
-      name: "Demo User",
-      picture: "https://ui-avatars.com/api/?name=Demo+User&background=4285f4&color=fff",
-    };
-
-    loginWithGoogle(mockGoogleUser)
+    loginWithGoogle()
       .then((result) => {
         if (result.success) {
           navigate("/marketing-dashboard");

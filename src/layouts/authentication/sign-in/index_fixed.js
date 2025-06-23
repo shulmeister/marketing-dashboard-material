@@ -72,21 +72,6 @@ function Basic() {
     setLoading(false);
   };
 
-  const handleGoogleLogin = () => {
-    // For demo purposes, simulate Google login
-    const demoGoogleUser = {
-      email: "demo@gmail.com",
-      name: "Demo User",
-      picture: "https://ui-avatars.com/api/?name=Demo+User&background=344767&color=fff",
-    };
-
-    login(demoGoogleUser.email, "demo").then((result) => {
-      if (result.success) {
-        navigate("/marketing-dashboard");
-      }
-    });
-  };
-
   return (
     <BasicLayout image={bgImage}>
       <Card>
@@ -116,14 +101,7 @@ function Basic() {
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-                onClick={handleGoogleLogin}
-                sx={{ cursor: "pointer" }}
-              >
+              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
                 <GoogleIcon color="inherit" />
               </MDTypography>
             </Grid>

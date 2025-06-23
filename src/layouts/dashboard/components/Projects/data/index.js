@@ -2,31 +2,23 @@
 /* eslint-disable react/function-component-definition */
 /**
 =========================================================
-* Material Dashboard 2 React - v2.2.0
+* Material Dashboard 2 React - Marketing Campaigns Data
 =========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
 // @mui material components
 import Tooltip from "@mui/material/Tooltip";
+import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDProgress from "components/MDProgress";
 
-// Images
-import logoXD from "assets/images/small-logos/logo-xd.svg";
-import logoAtlassian from "assets/images/small-logos/logo-atlassian.svg";
+// Images - using existing logos for marketing platforms
 import logoSlack from "assets/images/small-logos/logo-slack.svg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
+import logoXD from "assets/images/small-logos/logo-xd.svg";
+import logoAtlassian from "assets/images/small-logos/logo-atlassian.svg";
 import logoJira from "assets/images/small-logos/logo-jira.svg";
 import logoInvesion from "assets/images/small-logos/logo-invision.svg";
 import team1 from "assets/images/team-1.jpg";
@@ -60,150 +52,194 @@ export default function data() {
       </Tooltip>
     ));
 
-  const Company = ({ image, name }) => (
+  const Campaign = ({ image, name, type }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       <MDAvatar src={image} name={name} size="sm" />
-      <MDTypography variant="button" fontWeight="medium" ml={1} lineHeight={1}>
-        {name}
+      <MDBox ml={1}>
+        <MDTypography variant="button" fontWeight="medium" lineHeight={1}>
+          {name}
+        </MDTypography>
+        <MDBox>
+          <MDTypography variant="caption" color="text">
+            {type}
+          </MDTypography>
+        </MDBox>
+      </MDBox>
+    </MDBox>
+  );
+
+  const StatusBadge = ({ status, color }) => (
+    <MDBox display="flex" alignItems="center">
+      <Icon fontSize="small" sx={{ color: color, mr: 1 }}>
+        {status === "Active"
+          ? "play_circle"
+          : status === "Completed"
+          ? "check_circle"
+          : "pause_circle"}
+      </Icon>
+      <MDTypography
+        variant="caption"
+        fontWeight="medium"
+        color={color === "success.main" ? "success" : color === "error.main" ? "error" : "warning"}
+      >
+        {status}
       </MDTypography>
     </MDBox>
   );
 
   return {
     columns: [
-      { Header: "companies", accessor: "companies", width: "45%", align: "left" },
-      { Header: "members", accessor: "members", width: "10%", align: "left" },
-      { Header: "budget", accessor: "budget", align: "center" },
-      { Header: "completion", accessor: "completion", align: "center" },
+      { Header: "campaign", accessor: "campaign", width: "45%", align: "left" },
+      { Header: "team", accessor: "team", width: "15%", align: "left" },
+      { Header: "performance", accessor: "performance", align: "center" },
+      { Header: "status", accessor: "status", align: "center" },
     ],
 
     rows: [
       {
-        companies: <Company image={logoXD} name="Material UI XD Version" />,
-        members: (
+        campaign: (
+          <Campaign image={logoSlack} name="Summer Marketing Blitz" type="Multi-channel Campaign" />
+        ),
+        team: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team1, "Ryan Tompson"],
-              [team2, "Romina Hadid"],
-              [team3, "Alexander Smith"],
-              [team4, "Jessica Doe"],
+              [team1, "Marketing Manager"],
+              [team2, "Content Specialist"],
+              [team3, "Social Media Lead"],
+              [team4, "Analytics Specialist"],
             ])}
           </MDBox>
         ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $14,000
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={60} color="info" variant="gradient" label={false} />
+        performance: (
+          <MDBox textAlign="center">
+            <MDTypography variant="caption" color="success" fontWeight="medium">
+              142% ROI
+            </MDTypography>
+            <MDBox width="8rem" textAlign="left" mt={0.5}>
+              <MDProgress value={85} color="success" variant="gradient" label={false} />
+            </MDBox>
           </MDBox>
         ),
+        status: <StatusBadge status="Active" color="success.main" />,
       },
       {
-        companies: <Company image={logoAtlassian} name="Add Progress Track" />,
-        members: (
+        campaign: (
+          <Campaign image={logoSpotify} name="Email Newsletter Series" type="Mailchimp Campaign" />
+        ),
+        team: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team2, "Romina Hadid"],
-              [team4, "Jessica Doe"],
+              [team2, "Email Marketing Lead"],
+              [team4, "Content Writer"],
             ])}
           </MDBox>
         ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $3,000
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={10} color="info" variant="gradient" label={false} />
+        performance: (
+          <MDBox textAlign="center">
+            <MDTypography variant="caption" color="info" fontWeight="medium">
+              28.5% Open Rate
+            </MDTypography>
+            <MDBox width="8rem" textAlign="left" mt={0.5}>
+              <MDProgress value={65} color="info" variant="gradient" label={false} />
+            </MDBox>
           </MDBox>
         ),
+        status: <StatusBadge status="Active" color="success.main" />,
       },
       {
-        companies: <Company image={logoSlack} name="Fix Platform Errors" />,
-        members: (
+        campaign: (
+          <Campaign image={logoXD} name="Facebook Ad Optimization" type="Social Media Ads" />
+        ),
+        team: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team1, "Ryan Tompson"],
-              [team3, "Alexander Smith"],
+              [team1, "Paid Ads Specialist"],
+              [team3, "Creative Designer"],
             ])}
           </MDBox>
         ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            Not set
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={100} color="success" variant="gradient" label={false} />
+        performance: (
+          <MDBox textAlign="center">
+            <MDTypography variant="caption" color="success" fontWeight="medium">
+              $2.34 CPC
+            </MDTypography>
+            <MDBox width="8rem" textAlign="left" mt={0.5}>
+              <MDProgress value={92} color="success" variant="gradient" label={false} />
+            </MDBox>
           </MDBox>
         ),
+        status: <StatusBadge status="Completed" color="success.main" />,
       },
       {
-        companies: <Company image={logoSpotify} name="Launch our Mobile App" />,
-        members: (
+        campaign: (
+          <Campaign image={logoAtlassian} name="Lead Generation Funnel" type="Digital Marketing" />
+        ),
+        team: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team4, "Jessica Doe"],
-              [team3, "Alexander Smith"],
-              [team2, "Romina Hadid"],
-              [team1, "Ryan Tompson"],
+              [team4, "Growth Manager"],
+              [team3, "UX Designer"],
+              [team2, "Content Strategist"],
+              [team1, "Data Analyst"],
             ])}
           </MDBox>
         ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $20,500
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={100} color="success" variant="gradient" label={false} />
+        performance: (
+          <MDBox textAlign="center">
+            <MDTypography variant="caption" color="warning" fontWeight="medium">
+              234 Leads/month
+            </MDTypography>
+            <MDBox width="8rem" textAlign="left" mt={0.5}>
+              <MDProgress value={78} color="warning" variant="gradient" label={false} />
+            </MDBox>
           </MDBox>
         ),
+        status: <StatusBadge status="Active" color="success.main" />,
       },
       {
-        companies: <Company image={logoJira} name="Add the New Pricing Page" />,
-        members: (
+        campaign: (
+          <Campaign image={logoJira} name="Google Analytics Setup" type="Analytics & Tracking" />
+        ),
+        team: (
           <MDBox display="flex" py={1}>
-            {avatars([[team4, "Jessica Doe"]])}
+            {avatars([[team4, "Analytics Specialist"]])}
           </MDBox>
         ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $500
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={25} color="info" variant="gradient" label={false} />
+        performance: (
+          <MDBox textAlign="center">
+            <MDTypography variant="caption" color="success" fontWeight="medium">
+              Live Tracking
+            </MDTypography>
+            <MDBox width="8rem" textAlign="left" mt={0.5}>
+              <MDProgress value={100} color="success" variant="gradient" label={false} />
+            </MDBox>
           </MDBox>
         ),
+        status: <StatusBadge status="Completed" color="success.main" />,
       },
       {
-        companies: <Company image={logoInvesion} name="Redesign New Online Shop" />,
-        members: (
+        campaign: (
+          <Campaign image={logoInvesion} name="Content Marketing Hub" type="Content Strategy" />
+        ),
+        team: (
           <MDBox display="flex" py={1}>
             {avatars([
-              [team1, "Ryan Tompson"],
-              [team4, "Jessica Doe"],
+              [team1, "Content Manager"],
+              [team4, "SEO Specialist"],
             ])}
           </MDBox>
         ),
-        budget: (
-          <MDTypography variant="caption" color="text" fontWeight="medium">
-            $2,000
-          </MDTypography>
-        ),
-        completion: (
-          <MDBox width="8rem" textAlign="left">
-            <MDProgress value={40} color="info" variant="gradient" label={false} />
+        performance: (
+          <MDBox textAlign="center">
+            <MDTypography variant="caption" color="info" fontWeight="medium">
+              +45% Traffic
+            </MDTypography>
+            <MDBox width="8rem" textAlign="left" mt={0.5}>
+              <MDProgress value={60} color="info" variant="gradient" label={false} />
+            </MDBox>
           </MDBox>
         ),
+        status: <StatusBadge status="Active" color="success.main" />,
       },
     ],
   };
