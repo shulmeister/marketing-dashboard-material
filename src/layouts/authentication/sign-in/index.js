@@ -73,18 +73,7 @@ function Basic() {
   };
 
   const handleGoogleLogin = () => {
-    // For demo purposes, simulate Google login
-    const demoGoogleUser = {
-      email: "demo@gmail.com",
-      name: "Demo User",
-      picture: "https://ui-avatars.com/api/?name=Demo+User&background=344767&color=fff",
-    };
-
-    loginWithGoogle(demoGoogleUser).then((result) => {
-      if (result.success) {
-        navigate("/marketing-dashboard");
-      }
-    });
+    loginWithGoogle();
   };
 
   return (

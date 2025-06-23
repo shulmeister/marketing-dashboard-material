@@ -29,6 +29,17 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
     setLoading(false);
+
+    // Load Google OAuth script
+    const loadGoogleScript = () => {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    };
+
+    loadGoogleScript();
   }, []);
 
   // Simple email/password login (for demo purposes)
@@ -53,25 +64,62 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Google login (placeholder for now)
-  const loginWithGoogle = async (googleUser) => {
+  // Real Google OAuth login
+  const loginWithGoogle = async () => {
     try {
+      const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+      if (!clientId) {
+        throw new Error("Google Client ID not configured");
+      }
+
+      // Initialize Google OAuth
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleResponse,
+        });
+
+        // Prompt for Google sign-in
+        window.google.accounts.id.prompt();
+      } else {
+        throw new Error("Google OAuth script not loaded");
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error("Google login error:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Handle Google OAuth response
+  const handleGoogleResponse = async (response) => {
+    try {
+      // Decode the JWT token
+      const base64Url = response.credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      const userInfo = JSON.parse(jsonPayload);
+
       const userData = {
-        id: googleUser.sub || Date.now(),
-        email: googleUser.email,
-        name: googleUser.name,
-        avatar:
-          googleUser.picture ||
-          `https://ui-avatars.com/api/?name=${googleUser.name}&background=344767&color=fff`,
+        id: userInfo.sub,
+        email: userInfo.email,
+        name: userInfo.name,
+        avatar: userInfo.picture,
         provider: "google",
       };
 
       localStorage.setItem("dashboard-user", JSON.stringify(userData));
       setUser(userData);
       setIsAuthenticated(true);
-      return { success: true };
+
+      // Redirect to dashboard
+      window.location.href = "/marketing-dashboard";
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error("Error processing Google response:", error);
     }
   };
 
