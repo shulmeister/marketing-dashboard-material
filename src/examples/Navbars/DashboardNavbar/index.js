@@ -152,11 +152,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link>
               <IconButton
                 size="small"
                 disableRipple
@@ -168,7 +163,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
               </IconButton>
-              {isAuthenticated && user && (
+              {isAuthenticated && user ? (
                 <>
                   <IconButton
                     size="small"
@@ -204,7 +199,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     />
                   </Menu>
                 </>
-              )}
+              ) : null}
               <IconButton
                 size="small"
                 disableRipple

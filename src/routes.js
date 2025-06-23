@@ -68,12 +68,125 @@ const routes = [
     ),
   },
   {
+    type: "divider",
+  },
+  {
+    type: "title",
+    title: "Analytics & Reports",
+  },
+  {
+    type: "collapse",
+    name: "Email Marketing",
+    key: "simple-marketing",
+    icon: <Icon fontSize="small">email</Icon>,
+    route: "/simple-marketing",
+    component: (
+      <ProtectedRoute>
+        <SimpleMarketingDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Social Media",
+    key: "minimal-dashboard",
+    icon: <Icon fontSize="small">share</Icon>,
+    route: "/minimal-dashboard",
+    component: (
+      <ProtectedRoute>
+        <MinimalDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Campaign Analytics",
+    key: "dashboard",
+    icon: <Icon fontSize="small">trending_up</Icon>,
+    route: "/dashboard",
+    component: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Reports",
+    key: "tables",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/tables",
+    component: (
+      <ProtectedRoute>
+        <Tables />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "title",
+    title: "Tools & Settings",
+  },
+  {
+    type: "collapse",
+    name: "Billing",
+    key: "billing",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/billing",
+    component: (
+      <ProtectedRoute>
+        <Billing />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    type: "collapse",
+    name: "Notifications",
+    key: "notifications",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/notifications",
+    component: (
+      <ProtectedRoute>
+        <Notifications />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "title",
+    title: "Account Pages",
+  },
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
+    component: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
     type: "collapse",
     name: "Sign In",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
     component: <SignIn />,
+  },
+  {
+    type: "collapse",
+    name: "Sign Up",
+    key: "sign-up",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/authentication/sign-up",
+    component: <SignUp />,
   },
 ];
 
