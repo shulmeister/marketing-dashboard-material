@@ -29,11 +29,10 @@ import { useMarketingData } from "hooks/useMarketingData";
 
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import MarketingActivity from "layouts/dashboard/components/OrdersOverview";
 
 function MarketingDashboard() {
   const { mailchimpData, facebookData, loading, error, refreshData } = useMarketingData();
-  const isUsingMockData = process.env.REACT_APP_USE_MOCK_DATA === "true";
 
   // Transform Mailchimp data for charts
   const mailchimpChartData = {
@@ -93,20 +92,14 @@ function MarketingDashboard() {
                 Shulman Marketing Analytics
               </MDTypography>
               <MDTypography variant="body2" color="text">
-                {isUsingMockData
-                  ? "Demo environment - Real-time marketing insights"
-                  : "Live data from Facebook Ads, Mailchimp & Google Sheets"} • {new Date().toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
+                Live data from Facebook Ads, Mailchimp & Google Sheets •{" "}
+                {new Date().toLocaleDateString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </MDTypography>
-              {isUsingMockData && (
-                <MDTypography variant="caption" color="warning" fontWeight="bold">
-                  ⚠️ DEMO MODE - Switch to real data in settings
-                </MDTypography>
-              )}
             </Grid>
             <Grid item xs={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
               <MDButton
@@ -257,7 +250,7 @@ function MarketingDashboard() {
               <Projects />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
+              <MarketingActivity />
             </Grid>
           </Grid>
         </MDBox>
