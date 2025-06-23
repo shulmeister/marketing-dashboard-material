@@ -93,8 +93,8 @@ function MarketingDashboard() {
                 Marketing Analytics Dashboard
               </MDTypography>
               <MDTypography variant="body2" color="text">
-                {isUsingMockData 
-                  ? "Using mock data for demonstration" 
+                {isUsingMockData
+                  ? "Using mock data for demonstration"
                   : "Real-time insights from Facebook Ads and Mailchimp"}
               </MDTypography>
               {isUsingMockData && (

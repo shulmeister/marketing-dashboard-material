@@ -29,12 +29,10 @@ export const useMarketingData = () => {
       try {
         if (USE_MOCK_DATA) {
           console.log("📊 Using mock data");
-          // Use mock data for development
           setMailchimpData(mockMailchimpData);
           setFacebookData(mockFacebookData);
         } else {
           console.log("🌐 Fetching real API data...");
-          // Fetch real data from APIs
           const [mailchimpResult, facebookResult] = await Promise.allSettled([
             mailchimpService.getOverview(),
             facebookService.getInsights(),
@@ -59,7 +57,6 @@ export const useMarketingData = () => {
       } catch (err) {
         console.error("Error fetching marketing data:", err);
         setError(err.message);
-        // Fallback to mock data on error
         setMailchimpData(mockMailchimpData);
         setFacebookData(mockFacebookData);
       } finally {
@@ -73,7 +70,6 @@ export const useMarketingData = () => {
   const refreshData = () => {
     setLoading(true);
     setError(null);
-    // Re-fetch data
     const fetchData = async () => {
       try {
         if (!USE_MOCK_DATA) {
@@ -108,4 +104,3 @@ export const useMarketingData = () => {
     refreshData,
   };
 };
-// Trigger deployment
