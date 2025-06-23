@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -53,6 +53,78 @@ function Basic() {
 
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
+
+  // Handle OAuth redirect in popup
+  useEffect(() => {
+    const handleOAuthRedirect = () => {
+      const hash = window.location.hash;
+      const urlParams = new URLSearchParams(window.location.search);
+      const state = urlParams.get("state");
+
+      // Check if this is an OAuth redirect in a popup
+      if (hash && (hash.includes("access_token") || hash.includes("id_token"))) {
+        console.log("OAuth redirect detected in popup");
+        
+        try {
+          const hashParams = new URLSearchParams(hash.substring(1));
+          const idToken = hashParams.get("id_token");
+          const hashState = hashParams.get("state");
+
+          if ((state === "google_oauth_popup" || hashState === "google_oauth_popup") && idToken) {
+            console.log("Valid OAuth response, processing...");
+            
+            // Decode and process the token
+            const base64Url = idToken.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+              atob(base64)
+                .split("")
+                .map(function (c) {
+                  return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                })
+                .join("")
+            );
+
+            const userInfo = JSON.parse(jsonPayload);
+
+            const userData = {
+              id: userInfo.sub,
+              email: userInfo.email,
+              name: userInfo.name,
+              avatar: userInfo.picture,
+              provider: "google",
+            };
+
+            // Store user data and close popup
+            localStorage.setItem("dashboard-user", JSON.stringify(userData));
+            
+            // Signal to parent window and close popup
+            if (window.opener) {
+              window.opener.postMessage({
+                type: "GOOGLE_AUTH_SUCCESS",
+                user: userData
+              }, window.location.origin);
+              window.close();
+            } else {
+              // Not in popup, redirect normally
+              window.location.href = "/marketing-dashboard";
+            }
+          }
+        } catch (error) {
+          console.error("Error processing OAuth redirect:", error);
+          if (window.opener) {
+            window.opener.postMessage({
+              type: "GOOGLE_AUTH_ERROR",
+              error: error.message
+            }, window.location.origin);
+            window.close();
+          }
+        }
+      }
+    };
+
+    handleOAuthRedirect();
+  }, []);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 

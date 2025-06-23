@@ -122,7 +122,7 @@ export const AuthProvider = ({ children }) => {
 
       // Direct OAuth popup approach
       const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-      const redirectUri = window.location.origin;
+      const redirectUri = `${window.location.origin}/authentication/sign-in`;
 
       const params = new URLSearchParams({
         client_id: clientId,
@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }) => {
         response_type: "token id_token",
         scope: "openid profile email",
         include_granted_scopes: "true",
-        state: Math.random().toString(36).substring(7),
+        state: "google_oauth_popup",
         nonce: Math.random().toString(36).substring(7),
       });
 
@@ -151,43 +151,43 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      // Monitor popup for OAuth response
+      // Monitor popup for OAuth response using postMessage
       return new Promise((resolve) => {
+        // Listen for messages from popup
+        const handleMessage = (event) => {
+          if (event.origin !== window.location.origin) return;
+
+          if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+            console.log("Received successful auth message from popup");
+            setUser(event.data.user);
+            setIsAuthenticated(true);
+            window.removeEventListener("message", handleMessage);
+            popup.close();
+            // Redirect to dashboard
+            window.location.href = "/marketing-dashboard";
+            resolve({ success: true });
+          } else if (event.data.type === "GOOGLE_AUTH_ERROR") {
+            console.error("Received auth error from popup:", event.data.error);
+            window.removeEventListener("message", handleMessage);
+            popup.close();
+            resolve({ success: false, error: event.data.error });
+          }
+        };
+
+        window.addEventListener("message", handleMessage);
+
         const checkPopup = setInterval(() => {
-          try {
-            if (popup.closed) {
-              clearInterval(checkPopup);
-              resolve({ success: false, error: "Authentication cancelled" });
-              return;
-            }
-
-            // Check if popup URL contains the response
-            const popupUrl = popup.location.href;
-            if (popupUrl.includes("#access_token") || popupUrl.includes("#id_token")) {
-              clearInterval(checkPopup);
-
-              // Extract the hash from the URL
-              const urlParams = new URLSearchParams(popupUrl.split("#")[1]);
-              const idToken = urlParams.get("id_token");
-
-              popup.close();
-
-              if (idToken) {
-                // Process the ID token
-                handleGoogleTokenResponse(idToken);
-                resolve({ success: true });
-              } else {
-                resolve({ success: false, error: "No ID token received" });
-              }
-            }
-          } catch (e) {
-            // Ignore cross-origin errors while popup is on Google's domain
+          if (popup.closed) {
+            clearInterval(checkPopup);
+            window.removeEventListener("message", handleMessage);
+            resolve({ success: false, error: "Authentication cancelled" });
           }
         }, 1000);
 
         // Timeout after 5 minutes
         setTimeout(() => {
           clearInterval(checkPopup);
+          window.removeEventListener("message", handleMessage);
           if (!popup.closed) {
             popup.close();
           }
