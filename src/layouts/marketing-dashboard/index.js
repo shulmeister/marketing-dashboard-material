@@ -93,6 +93,7 @@ function MarketingDashboard() {
               </MDTypography>
               <MDTypography variant="body2" color="text">
                 Live data from Facebook Ads, Mailchimp & Google Sheets •{" "}
+                {" "}
                 {new Date().toLocaleDateString("en-US", {
                   weekday: "long",
                   year: "numeric",
@@ -113,8 +114,6 @@ function MarketingDashboard() {
             </Grid>
           </Grid>
         </MDBox>
-        {/* Prettier touch: blank line to force update */}
-
         {/* Statistics Cards */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
