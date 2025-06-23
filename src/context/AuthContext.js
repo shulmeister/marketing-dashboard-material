@@ -37,11 +37,20 @@ export const AuthProvider = ({ children }) => {
       try {
         const urlParams = new URLSearchParams(hash.substring(1));
         const idToken = urlParams.get("id_token");
+        const state = urlParams.get("state");
 
-        if (idToken) {
-          handleGoogleTokenResponse(idToken);
+        if (idToken && state === "google_oauth_redirect") {
+          console.log("Valid Google OAuth redirect detected");
+          await handleGoogleTokenResponse(idToken);
+          
           // Clean up the URL
           window.history.replaceState({}, document.title, window.location.pathname);
+          
+          // Redirect to dashboard or saved path
+          const savedPath = localStorage.getItem("pre_auth_path");
+          localStorage.removeItem("pre_auth_path");
+          window.location.href = savedPath === "/authentication/sign-in" ? "/marketing-dashboard" : (savedPath || "/marketing-dashboard");
+          return; // Don't continue with normal loading
         }
       } catch (error) {
         console.error("Error processing OAuth redirect:", error);
@@ -109,7 +118,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Real Google OAuth login
+  // Real Google OAuth login - Direct redirect approach
   const loginWithGoogle = async () => {
     try {
       const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -120,7 +129,7 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: "Google Client ID not configured" };
       }
 
-      // Direct OAuth popup approach
+      // Direct OAuth redirect approach (more reliable than popup)
       const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
 
       // Use configured redirect URI or fall back to current origin
@@ -148,70 +157,20 @@ export const AuthProvider = ({ children }) => {
         response_type: "token id_token",
         scope: "openid profile email",
         include_granted_scopes: "true",
-        state: "google_oauth_popup",
+        state: "google_oauth_redirect",
         nonce: Math.random().toString(36).substring(7),
       });
 
       const authUrl = `${oauth2Endpoint}?${params.toString()}`;
-      console.log("Opening Google OAuth popup:", authUrl);
+      console.log("Redirecting to Google OAuth:", authUrl);
 
-      // Open popup window
-      const popup = window.open(
-        authUrl,
-        "google-oauth",
-        "width=500,height=600,scrollbars=yes,resizable=yes"
-      );
+      // Save current page for return after auth
+      localStorage.setItem("pre_auth_path", window.location.pathname);
 
-      if (!popup) {
-        return {
-          success: false,
-          error: "Popup blocked. Please allow popups for this site and try again.",
-        };
-      }
-
-      // Monitor popup for OAuth response using postMessage
-      return new Promise((resolve) => {
-        // Listen for messages from popup
-        const handleMessage = (event) => {
-          if (event.origin !== window.location.origin) return;
-
-          if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
-            console.log("Received successful auth message from popup");
-            setUser(event.data.user);
-            setIsAuthenticated(true);
-            window.removeEventListener("message", handleMessage);
-            popup.close();
-            // Redirect to dashboard
-            window.location.href = "/marketing-dashboard";
-            resolve({ success: true });
-          } else if (event.data.type === "GOOGLE_AUTH_ERROR") {
-            console.error("Received auth error from popup:", event.data.error);
-            window.removeEventListener("message", handleMessage);
-            popup.close();
-            resolve({ success: false, error: event.data.error });
-          }
-        };
-
-        window.addEventListener("message", handleMessage);
-
-        const checkPopup = setInterval(() => {
-          if (popup.closed) {
-            clearInterval(checkPopup);
-            window.removeEventListener("message", handleMessage);
-            resolve({ success: false, error: "Authentication cancelled" });
-          }
-        }, 1000);
-
-        // Timeout after 5 minutes
-        setTimeout(() => {
-          clearInterval(checkPopup);
-          window.removeEventListener("message", handleMessage);
-          if (!popup.closed) {
-            popup.close();
-          }
-          resolve({ success: false, error: "Authentication timeout" });
-        }, 300000);
-      });
+      // Direct redirect to Google OAuth
+      window.location.href = authUrl;
+      
+      return { success: true }; // Will redirect, so this doesn't matter
     } catch (error) {
       console.error("Google login error:", error);
       return { success: false, error: error.message };
@@ -254,9 +213,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Handle Google token response from popup
+  // Handle Google token response from redirect
   const handleGoogleTokenResponse = async (idToken) => {
     try {
+      console.log("Processing Google ID token");
+      
       // Decode the JWT token
       const base64Url = idToken.split(".")[1];
       const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -270,6 +231,7 @@ export const AuthProvider = ({ children }) => {
       );
 
       const userInfo = JSON.parse(jsonPayload);
+      console.log("Decoded user info:", { name: userInfo.name, email: userInfo.email });
 
       const userData = {
         id: userInfo.sub,
@@ -282,11 +244,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("dashboard-user", JSON.stringify(userData));
       setUser(userData);
       setIsAuthenticated(true);
-
-      // Redirect to dashboard
-      window.location.href = "/marketing-dashboard";
+      
+      console.log("User authenticated successfully");
+      return { success: true };
     } catch (error) {
       console.error("Error processing Google token response:", error);
+      return { success: false, error: error.message };
     }
   };
 
