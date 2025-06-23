@@ -23,15 +23,15 @@ export const useCampaignData = () => {
         if (USE_MOCK_DATA) {
           console.log("📊 Using mock sales data");
           setSalesData(mockSalesData);
-          // Mock Google Analytics data for now
+          // Mock Google Analytics data
           setAnalyticsData({
-            sessions: 1250,
-            users: 890,
-            conversions: 45,
-            conversionRate: 3.6,
-            avgSessionDuration: 145,
-            pageViews: 3200,
-            bounceRate: 42.5,
+            sessions: 1850,
+            users: 1290,
+            conversions: 67,
+            conversionRate: 5.2,
+            avgSessionDuration: 185,
+            pageViews: 4850,
+            bounceRate: 38.7,
             lastUpdated: new Date().toISOString(),
           });
         } else {
@@ -47,15 +47,16 @@ export const useCampaignData = () => {
             setSalesData(mockSalesData);
           }
 
-          // Fetch Google Analytics data (placeholder for now)
+          // Google Analytics data (currently using realistic placeholder data)
+          // TODO: Integrate with real Google Analytics API when available
           setAnalyticsData({
-            sessions: 1250,
-            users: 890,
-            conversions: 45,
-            conversionRate: 3.6,
-            avgSessionDuration: 145,
-            pageViews: 3200,
-            bounceRate: 42.5,
+            sessions: 1850,
+            users: 1290,
+            conversions: 67,
+            conversionRate: 5.2,
+            avgSessionDuration: 185,
+            pageViews: 4850,
+            bounceRate: 38.7,
             lastUpdated: new Date().toISOString(),
           });
         }
@@ -64,13 +65,13 @@ export const useCampaignData = () => {
         setError(err.message);
         setSalesData(mockSalesData);
         setAnalyticsData({
-          sessions: 1250,
-          users: 890,
-          conversions: 45,
-          conversionRate: 3.6,
-          avgSessionDuration: 145,
-          pageViews: 3200,
-          bounceRate: 42.5,
+          sessions: 1850,
+          users: 1290,
+          conversions: 67,
+          conversionRate: 5.2,
+          avgSessionDuration: 185,
+          pageViews: 4850,
+          bounceRate: 38.7,
           lastUpdated: new Date().toISOString(),
         });
       } finally {
