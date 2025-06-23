@@ -41,15 +41,15 @@ export const AuthProvider = ({ children }) => {
 
         if (idToken && state === "google_oauth_redirect") {
           console.log("Valid Google OAuth redirect detected");
-          await handleGoogleTokenResponse(idToken);
-          
-          // Clean up the URL
-          window.history.replaceState({}, document.title, window.location.pathname);
-          
-          // Redirect to dashboard or saved path
-          const savedPath = localStorage.getItem("pre_auth_path");
-          localStorage.removeItem("pre_auth_path");
-          window.location.href = savedPath === "/authentication/sign-in" ? "/marketing-dashboard" : (savedPath || "/marketing-dashboard");
+          handleGoogleTokenResponse(idToken).then(() => {
+            // Clean up the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Redirect to dashboard or saved path
+            const savedPath = localStorage.getItem("pre_auth_path");
+            localStorage.removeItem("pre_auth_path");
+            window.location.href = savedPath === "/authentication/sign-in" ? "/marketing-dashboard" : (savedPath || "/marketing-dashboard");
+          });
           return; // Don't continue with normal loading
         }
       } catch (error) {
