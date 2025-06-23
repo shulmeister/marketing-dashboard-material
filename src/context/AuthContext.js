@@ -31,13 +31,13 @@ export const AuthProvider = ({ children }) => {
 
     // Check for OAuth redirect (hash contains access_token or id_token)
     const hash = window.location.hash;
-    if (hash && (hash.includes('access_token') || hash.includes('id_token'))) {
+    if (hash && (hash.includes("access_token") || hash.includes("id_token"))) {
       console.log("Processing OAuth redirect");
-      
+
       try {
         const urlParams = new URLSearchParams(hash.substring(1));
-        const idToken = urlParams.get('id_token');
-        
+        const idToken = urlParams.get("id_token");
+
         if (idToken) {
           handleGoogleTokenResponse(idToken);
           // Clean up the URL
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         console.error("Error processing OAuth redirect:", error);
       }
     }
-    
+
     setLoading(false);
 
     // Load Google OAuth script
@@ -59,7 +59,9 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Check if script element already exists
-      const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+      const existingScript = document.querySelector(
+        'script[src="https://accounts.google.com/gsi/client"]'
+      );
       if (existingScript) {
         console.log("Google script element already exists");
         return;
@@ -70,15 +72,15 @@ export const AuthProvider = ({ children }) => {
       script.src = "https://accounts.google.com/gsi/client";
       script.async = true;
       script.defer = true;
-      
+
       script.onload = () => {
         console.log("Google OAuth script loaded successfully");
       };
-      
+
       script.onerror = (error) => {
         console.error("Failed to load Google OAuth script:", error);
       };
-      
+
       document.head.appendChild(script);
     };
 
@@ -112,40 +114,43 @@ export const AuthProvider = ({ children }) => {
     try {
       const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
       console.log("Google Client ID:", clientId ? "Set" : "Not set");
-      
+
       if (!clientId) {
         console.error("Google Client ID not configured");
         return { success: false, error: "Google Client ID not configured" };
       }
 
       // Direct OAuth popup approach
-      const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+      const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
       const redirectUri = window.location.origin;
-      
+
       const params = new URLSearchParams({
         client_id: clientId,
         redirect_uri: redirectUri,
-        response_type: 'token id_token',
-        scope: 'openid profile email',
-        include_granted_scopes: 'true',
+        response_type: "token id_token",
+        scope: "openid profile email",
+        include_granted_scopes: "true",
         state: Math.random().toString(36).substring(7),
         nonce: Math.random().toString(36).substring(7),
       });
-      
+
       const authUrl = `${oauth2Endpoint}?${params.toString()}`;
       console.log("Opening Google OAuth popup:", authUrl);
-      
+
       // Open popup window
       const popup = window.open(
         authUrl,
-        'google-oauth',
-        'width=500,height=600,scrollbars=yes,resizable=yes'
+        "google-oauth",
+        "width=500,height=600,scrollbars=yes,resizable=yes"
       );
-      
+
       if (!popup) {
-        return { success: false, error: "Popup blocked. Please allow popups for this site and try again." };
+        return {
+          success: false,
+          error: "Popup blocked. Please allow popups for this site and try again.",
+        };
       }
-      
+
       // Monitor popup for OAuth response
       return new Promise((resolve) => {
         const checkPopup = setInterval(() => {
@@ -158,15 +163,15 @@ export const AuthProvider = ({ children }) => {
 
             // Check if popup URL contains the response
             const popupUrl = popup.location.href;
-            if (popupUrl.includes('#access_token') || popupUrl.includes('#id_token')) {
+            if (popupUrl.includes("#access_token") || popupUrl.includes("#id_token")) {
               clearInterval(checkPopup);
-              
+
               // Extract the hash from the URL
-              const urlParams = new URLSearchParams(popupUrl.split('#')[1]);
-              const idToken = urlParams.get('id_token');
-              
+              const urlParams = new URLSearchParams(popupUrl.split("#")[1]);
+              const idToken = urlParams.get("id_token");
+
               popup.close();
-              
+
               if (idToken) {
                 // Process the ID token
                 handleGoogleTokenResponse(idToken);
@@ -179,7 +184,7 @@ export const AuthProvider = ({ children }) => {
             // Ignore cross-origin errors while popup is on Google's domain
           }
         }, 1000);
-        
+
         // Timeout after 5 minutes
         setTimeout(() => {
           clearInterval(checkPopup);
@@ -189,7 +194,6 @@ export const AuthProvider = ({ children }) => {
           resolve({ success: false, error: "Authentication timeout" });
         }, 300000);
       });
-
     } catch (error) {
       console.error("Google login error:", error);
       return { success: false, error: error.message };
