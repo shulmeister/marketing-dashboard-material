@@ -1,4 +1,9 @@
-/**
+const fs = require('fs');
+const path = require('path');
+
+// Fix AuthContext.js
+const authContextPath = path.join(__dirname, 'src/context/AuthContext.js');
+const authContextContent = `/**
  * Authentication Context for Material Dashboard
  */
 
@@ -39,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         id: 1,
         email: email,
         name: email.split("@")[0],
-        avatar: `https://ui-avatars.com/api/?name=${email.split("@")[0]}&background=344767&color=fff`,
+        avatar: \`https://ui-avatars.com/api/?name=\${email.split("@")[0]}&background=344767&color=fff\`,
       };
 
       localStorage.setItem("dashboard-user", JSON.stringify(userData));
@@ -60,7 +65,7 @@ export const AuthProvider = ({ children }) => {
         name: googleUser.name,
         avatar:
           googleUser.picture ||
-          `https://ui-avatars.com/api/?name=${googleUser.name}&background=344767&color=fff`,
+          \`https://ui-avatars.com/api/?name=\${googleUser.name}&background=344767&color=fff\`,
         provider: "google",
       };
 
@@ -95,3 +100,7 @@ export const AuthProvider = ({ children }) => {
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
+`;
+
+fs.writeFileSync(authContextPath, authContextContent);
+console.log('Fixed AuthContext.js');

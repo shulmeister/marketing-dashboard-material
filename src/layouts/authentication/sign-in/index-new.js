@@ -51,8 +51,8 @@ function Basic() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { login, loginWithGoogle } = useAuth();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
@@ -73,18 +73,28 @@ function Basic() {
   };
 
   const handleGoogleLogin = () => {
-    // For demo purposes, simulate Google login
-    const demoGoogleUser = {
-      email: "demo@gmail.com",
+    setLoading(true);
+    setError("");
+
+    // Simulate Google login with mock data
+    const mockGoogleUser = {
+      sub: "123456789",
+      email: "demo@google.com",
       name: "Demo User",
-      picture: "https://ui-avatars.com/api/?name=Demo+User&background=344767&color=fff",
+      picture: "https://ui-avatars.com/api/?name=Demo+User&background=4285f4&color=fff",
     };
 
-    login(demoGoogleUser.email, "demo").then((result) => {
-      if (result.success) {
-        navigate("/marketing-dashboard");
-      }
-    });
+    loginWithGoogle(mockGoogleUser)
+      .then((result) => {
+        if (result.success) {
+          navigate("/marketing-dashboard");
+        } else {
+          setError(result.error || "Google login failed");
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
