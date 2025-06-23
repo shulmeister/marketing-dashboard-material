@@ -85,17 +85,22 @@ function MarketingDashboard() {
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
-        {/* Header with refresh button */}
+        {/* Header with company branding and date */}
         <MDBox mb={3}>
           <Grid container spacing={3} alignItems="center">
             <Grid item xs={12} md={6}>
               <MDTypography variant="h4" fontWeight="medium">
-                Marketing Analytics Dashboard
+                Shulman Marketing Analytics
               </MDTypography>
               <MDTypography variant="body2" color="text">
                 {isUsingMockData
-                  ? "Using mock data for demonstration"
-                  : "Real-time insights from Facebook Ads and Mailchimp"}
+                  ? "Demo environment - Real-time marketing insights"
+                  : "Live data from Facebook Ads, Mailchimp & Google Sheets"} • {new Date().toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
               </MDTypography>
               {isUsingMockData && (
                 <MDTypography variant="caption" color="warning" fontWeight="bold">
